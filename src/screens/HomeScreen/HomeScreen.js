@@ -2,6 +2,8 @@ import React, { useEffect, useState } from 'react'
 import { Button, FlatList, Keyboard, Text, TextInput, TouchableOpacity, View } from 'react-native'
 import styles from './styles';
 import { firebase } from '../../firebase/config'
+import { getFirestore, doc, deleteDoc } from "firebase/firestore";
+
 
 export default function HomeScreen(props) {
 
@@ -51,7 +53,7 @@ export default function HomeScreen(props) {
         }
     }
 
-    const renderEntity = ({item, index}) => {
+    const renderEntity = ({ item, index }) => {
         return (
             <View style={styles.entityContainer}>
                 <Text style={styles.entityText}>
@@ -59,14 +61,15 @@ export default function HomeScreen(props) {
                 </Text>
                 <Button
                     title="Del"
-                    onPress={deleteButtonPress(item, index)}
+                    onPress={() => { deleteButtonPress(item, index) }}
                 />
             </View>
         )
     }
 
-    const deleteButtonPress = ({id, text}) => {
+    const deleteButtonPress = ({ id, text }) => {
         console.log("ID: " + id + " || Text: " + text);
+        entityRef.doc(id).delete();
     }
 
     return (
@@ -85,7 +88,7 @@ export default function HomeScreen(props) {
                     <Text style={styles.buttonText}>Add</Text>
                 </TouchableOpacity>
             </View>
-            { entities && (
+            {entities && (
                 <View style={styles.listContainer}>
                     <FlatList
                         data={entities}
