@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { FlatList, Keyboard, Text, TextInput, TouchableOpacity, View } from 'react-native'
+import { Button, FlatList, Keyboard, Text, TextInput, TouchableOpacity, View } from 'react-native'
 import styles from './styles';
 import { firebase } from '../../firebase/config'
 
@@ -57,8 +57,16 @@ export default function HomeScreen(props) {
                 <Text style={styles.entityText}>
                     {index}. {item.text}
                 </Text>
+                <Button
+                    title="Del"
+                    onPress={deleteButtonPress(item, index)}
+                />
             </View>
         )
+    }
+
+    const deleteButtonPress = ({id, text}) => {
+        console.log("ID: " + id + " || Text: " + text);
     }
 
     return (
