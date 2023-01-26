@@ -1,6 +1,7 @@
 import 'react-native-gesture-handler';
 import React, { useEffect, useState } from 'react'
 import { firebase } from './src/firebase/config'
+import { Button } from 'react-native'
 import { NavigationContainer } from '@react-navigation/native'
 import { createStackNavigator } from '@react-navigation/stack'
 import { LoginScreen, HomeScreen, RegistrationScreen } from './src/screens'
@@ -46,9 +47,22 @@ export default function App() {
     <NavigationContainer>
       <Stack.Navigator>
         { user ? (
-          <Stack.Screen name="Home">
+          <>
+            <Stack.Screen name="Home" options={{
+              headerRight: () => (
+                <Button
+                  onPress = {() => {
+                    firebase.auth()
+                    .signOut()
+                    .then(setUser(null))
+                  }}
+                  title="Logout"
+                  color="black"/>
+              ),
+            }}>
             {props => <HomeScreen {...props} extraData={user} />}
           </Stack.Screen>
+          </>
         ) : (
           <>
             <Stack.Screen name="Login" component={LoginScreen} />
